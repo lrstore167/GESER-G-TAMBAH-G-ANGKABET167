@@ -3,28 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GESER G & TAMBAH G | ANGKABET167</title>
-    <!-- Firebase SDK -->
+    <title>GESER G & TAMBAH G ANGKABET167</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-analytics-compat.js"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #FFD700;
-            --secondary: #FFFFFF;
-            --dark: #121212;
-            --darker: #0A0A0A;
-            --light: #F5F5F5;
-            --accent: #FF6B6B;
-            --success: #4CAF50;
+            --secondary: #1A1A1A;
+            --accent: #FF6B00;
+            --text: #FFFFFF;
+            --text-secondary: #CCCCCC;
+            --card-bg: #2A2A2A;
+            --success: #28A745;
             --warning: #FFC107;
-            --danger: #F44336;
-            --info: #2196F3;
+            --danger: #DC3545;
+            --info: #17A2B8;
         }
 
         * {
@@ -35,21 +31,21 @@
         }
 
         body {
-            background-color: var(--dark);
-            color: var(--secondary);
+            background-color: var(--secondary);
+            color: var(--text);
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Star Animation */
+        /* Star animations */
         .stars {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: -1;
             pointer-events: none;
-            z-index: 0;
         }
 
         .star {
@@ -65,8 +61,8 @@
             height: 2px;
             background: linear-gradient(to right, rgba(255,215,0,0.1), var(--primary));
             border-radius: 50%;
-            animation: fallingStar var(--fall-duration) linear infinite;
-            opacity: 0;
+            animation: fall var(--fall-duration) linear infinite;
+            transform: rotate(45deg);
         }
 
         @keyframes twinkle {
@@ -74,126 +70,54 @@
             50% { opacity: 1; }
         }
 
-        @keyframes fallingStar {
+        @keyframes fall {
             0% {
-                transform: translateX(0) translateY(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            70% {
+                transform: translateY(-100vh) rotate(45deg);
                 opacity: 1;
             }
             100% {
-                transform: translateX(100px) translateY(100px);
+                transform: translateY(100vh) rotate(45deg);
                 opacity: 0;
             }
         }
 
-        /* Layout */
-        .app-container {
-            display: flex;
-            min-height: 100vh;
-            position: relative;
-            z-index: 1;
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            background-color: rgba(18, 18, 18, 0.9);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255, 215, 0, 0.1);
-            padding: 20px 0;
-            height: 100vh;
-            position: fixed;
-            overflow-y: auto;
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 20px 20px;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .logo {
-            height: 50px;
-            margin-right: 10px;
-        }
-
-        .brand-name {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--primary);
-        }
-
-        .sidebar-menu {
-            padding: 0 15px;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            margin-bottom: 5px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--secondary);
-            text-decoration: none;
-        }
-
-        .menu-item:hover, .menu-item.active {
-            background-color: rgba(255, 215, 0, 0.1);
-            color: var(--primary);
-        }
-
-        .menu-item i {
-            margin-right: 12px;
-            font-size: 18px;
-        }
-
-        .menu-item span {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .menu-divider {
-            height: 1px;
-            background-color: rgba(255, 255, 255, 0.1);
-            margin: 15px 0;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 280px;
-            padding: 30px;
-            background-color: var(--dark);
-        }
-
+        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 30px;
         }
 
-        .page-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary);
+        .logo-container {
+            display: flex;
+            align-items: center;
         }
 
-        .user-profile {
+        .logo {
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .user-info {
             display: flex;
             align-items: center;
         }
@@ -207,43 +131,111 @@
             align-items: center;
             justify-content: center;
             margin-right: 10px;
-            color: var(--dark);
+            color: var(--secondary);
             font-weight: bold;
         }
 
         .user-name {
             font-weight: 500;
-            margin-right: 10px;
+            margin-right: 15px;
         }
 
         .logout-btn {
-            background: none;
+            background-color: var(--danger);
+            color: white;
             border: none;
-            color: var(--secondary);
+            padding: 8px 15px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
         }
 
-        /* Cards */
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
             margin-bottom: 30px;
         }
 
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            text-align: center;
+            flex: 1;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-tab.active {
+            background-color: var(--primary);
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid var(--primary);
+        }
+
+        .tab-badge {
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        /* Main content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Cards */
         .card {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
             padding: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.1);
-            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 215, 0, 0.3);
         }
 
         .card-header {
@@ -251,137 +243,58 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background-color: rgba(255, 215, 0, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-        }
-
-        .card-value {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .card-description {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Forms */
-        .form-container {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 215, 0, 0.1);
-        }
-
-        .form-title {
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 20px;
             color: var(--primary);
+        }
+
+        .card-actions {
             display: flex;
-            align-items: center;
-        }
-
-        .form-title i {
-            margin-right: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 20px;
-        }
-
-        .form-col {
-            flex: 1;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: var(--secondary);
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            background-color: rgba(255, 215, 0, 0.05);
-        }
-
-        .form-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFD700' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 15px;
+            gap: 10px;
         }
 
         .btn {
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 5px;
             border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        .btn i {
-            margin-right: 8px;
+            gap: 5px;
         }
 
         .btn-primary {
             background-color: var(--primary);
-            color: var(--dark);
-        }
-
-        .btn-primary:hover {
-            background-color: #FFC600;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.1);
             color: var(--secondary);
         }
 
+        .btn-primary:hover {
+            background-color: #e6c200;
+        }
+
+        .btn-secondary {
+            background-color: var(--accent);
+            color: white;
+        }
+
         .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: #e05d00;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
         }
 
         .btn-danger {
@@ -390,250 +303,124 @@
         }
 
         .btn-danger:hover {
-            background-color: #E53935;
+            background-color: #c82333;
         }
 
-        .btn-group {
+        /* Forms */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+        }
+
+        .form-row {
             display: flex;
-            gap: 10px;
+            gap: 15px;
+        }
+
+        .form-col {
+            flex: 1;
         }
 
         /* Tables */
-        .table-container {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid rgba(255, 215, 0, 0.1);
+        .table-responsive {
             overflow-x: auto;
         }
 
         .table {
             width: 100%;
             border-collapse: collapse;
-        }
-
-        .table thead th {
-            padding: 12px 15px;
-            text-align: left;
-            background-color: rgba(255, 215, 0, 0.1);
-            color: var(--primary);
-            font-weight: 600;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-        }
-
-        .table tbody tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .table tbody tr:hover {
-            background-color: rgba(255, 215, 0, 0.05);
-        }
-
-        .table tbody td {
-            padding: 15px;
-            font-size: 14px;
-        }
-
-        .table-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--secondary);
-            border: none;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .action-btn.edit {
-            color: var(--primary);
-        }
-
-        .action-btn.edit:hover {
-            background-color: rgba(255, 215, 0, 0.1);
-        }
-
-        .action-btn.delete {
-            color: var(--danger);
-        }
-
-        .action-btn.delete:hover {
-            background-color: rgba(244, 67, 54, 0.1);
-        }
-
-        /* Status Badges */
-        .badge {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .badge-success {
-            background-color: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-        }
-
-        .badge-warning {
-            background-color: rgba(255, 193, 7, 0.2);
-            color: #FFC107;
-        }
-
-        .badge-danger {
-            background-color: rgba(244, 67, 54, 0.2);
-            color: #F44336;
-        }
-
-        /* Modals */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background-color: var(--darker);
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            padding: 25px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .modal.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 20px;
         }
 
-        .modal-title {
-            font-size: 20px;
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table th {
+            background-color: rgba(255, 215, 0, 0.1);
+            color: var(--primary);
             font-weight: 600;
-            color: var(--primary);
         }
 
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--secondary);
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
         }
 
-        .modal-close:hover {
-            color: var(--primary);
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
         }
 
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
+        .status-online {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success);
         }
 
-        /* Notifications */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            z-index: 1100;
-            transform: translateX(120%);
-            transition: all 0.3s ease;
-            max-width: 350px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        .status-offline {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--danger);
         }
 
-        .notification.show {
-            transform: translateX(0);
+        .status-pending {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning);
         }
 
-        .notification i {
-            margin-right: 10px;
-            font-size: 20px;
-        }
-
-        .notification.success {
-            background-color: var(--success);
-            color: white;
-        }
-
-        .notification.error {
-            background-color: var(--danger);
-            color: white;
-        }
-
-        .notification.warning {
-            background-color: var(--warning);
-            color: var(--dark);
-        }
-
-        .notification.info {
-            background-color: var(--info);
-            color: white;
-        }
-
-        /* Login Page */
+        /* Login page */
         .login-container {
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            background-color: var(--dark);
-            position: relative;
-            z-index: 1;
+            background-color: var(--secondary);
         }
 
         .login-card {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
             padding: 40px;
             width: 100%;
             max-width: 450px;
-            border: 1px solid rgba(255, 215, 0, 0.1);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
         }
 
         .login-logo {
@@ -642,558 +429,726 @@
         }
 
         .login-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .login-subtitle {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 24px;
             margin-bottom: 30px;
+            color: var(--primary);
         }
 
         .login-btn {
             width: 100%;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: var(--primary);
-            color: var(--dark);
-            font-weight: 600;
-            font-size: 16px;
+            padding: 12px;
+            background-color: var(--danger);
+            color: white;
             border: none;
+            border-radius: 5px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+            margin-top: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 20px;
+            gap: 10px;
         }
 
         .login-btn:hover {
-            background-color: #FFC600;
+            background-color: #c82333;
         }
 
-        .login-btn i {
-            margin-right: 10px;
-            font-size: 20px;
+        /* Alert */
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            border-left: 4px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.2);
+            border-left: 4px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.2);
+            border-left: 4px solid var(--warning);
+            color: var(--warning);
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Responsive */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 250px;
-            }
-            .main-content {
-                margin-left: 250px;
-            }
-        }
-
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                width: 280px;
+            .nav-tabs {
+                flex-direction: column;
             }
-            .sidebar.active {
-                transform: translateX(0);
+            
+            .nav-tab {
+                padding: 12px;
             }
-            .main-content {
-                margin-left: 0;
-            }
-            .mobile-menu-btn {
-                display: block;
-            }
+            
             .form-row {
                 flex-direction: column;
                 gap: 0;
             }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: space-between;
+            }
         }
 
-        /* Mobile Menu Button */
-        .mobile-menu-btn {
-            display: none;
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 101;
-            background-color: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: var(--primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
 
-        /* Loading Spinner */
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 215, 0, 0.1);
-            border-top: 4px solid var(--primary);
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e6c200;
+        }
+
+        /* Animation classes */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+
+        /* Grid layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Bank icons */
+        .bank-icon {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--primary);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+            background-color: var(--primary);
+            border: 2px solid var(--secondary);
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .timeline-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
         }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .empty-state i {
-            font-size: 50px;
-            margin-bottom: 20px;
-            color: rgba(255, 215, 0, 0.3);
-        }
-
-        .empty-state h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .empty-state p {
-            font-size: 14px;
+        .timeline-content {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <!-- Star Background Animation -->
+    <!-- Star background -->
     <div class="stars" id="stars"></div>
 
-    <!-- Login Screen -->
-    <div class="login-container" id="loginScreen">
+    <!-- Login Page -->
+    <div id="login-page" class="login-container">
         <div class="login-card">
             <img src="https://angkabet026.com/resources/images/logo.png" alt="Logo" class="login-logo">
-            <h1 class="login-title">GESER G & TAMBAH G</h1>
-            <p class="login-subtitle">ANKABET167 - Real Time Database Management</p>
-            <button class="login-btn" id="googleLoginBtn">
+            <h1 class="login-title">GESER G & TAMBAH G ANGKABET167</h1>
+            <div id="login-error" class="alert alert-danger" style="display: none;"></div>
+            <button id="google-login" class="login-btn">
                 <i class="fab fa-google"></i> Login with Google
             </button>
         </div>
     </div>
 
-    <!-- Main App Container (Hidden until login) -->
-    <div class="app-container" id="appContainer" style="display: none;">
-        <!-- Mobile Menu Button -->
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-            <i class="fas fa-bars"></i>
-        </button>
+    <!-- Dashboard -->
+    <div id="dashboard" style="display: none;">
+        <div class="container">
+            <!-- Header -->
+            <header class="header">
+                <div class="logo-container">
+                    <img src="https://angkabet026.com/resources/images/logo.png" alt="Logo" class="logo">
+                    <span class="logo-text">GESER G & TAMBAH G ANGKABET167</span>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name">User</span>
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <button class="logout-btn" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </header>
 
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <img src="https://angkabet026.com/resources/images/logo.png" alt="Logo" class="logo">
-                <span class="brand-name">ANKABET167</span>
+            <!-- Navigation Tabs -->
+            <nav class="nav-tabs">
+                <div class="nav-tab active" data-tab="dashboard-tab">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </div>
+                <div class="nav-tab" data-tab="geser-tab">
+                    <i class="fas fa-exchange-alt"></i> Geser G
+                </div>
+                <div class="nav-tab" data-tab="tambah-tab">
+                    <i class="fas fa-plus-circle"></i> Tambah G
+                </div>
+                <div class="nav-tab" data-tab="waiting-tab">
+                    <i class="fas fa-clock"></i> Waiting <span class="tab-badge" id="waiting-badge">0</span>
+                </div>
+                <div class="nav-tab" data-tab="history-tab">
+                    <i class="fas fa-history"></i> History
+                </div>
+                <div class="nav-tab" data-tab="accounts-tab">
+                    <i class="fas fa-university"></i> Data Rekening
+                </div>
+                <div class="nav-tab" data-tab="groups-tab">
+                    <i class="fas fa-users"></i> Grup Bank
+                </div>
+                <div class="nav-tab" data-tab="logs-tab">
+                    <i class="fas fa-clipboard-list"></i> Log Aktivitas
+                </div>
+            </nav>
+
+            <!-- Tab Contents -->
+            <div class="tab-content active" id="dashboard-tab">
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Statistik Hari Ini</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Jenis</th>
+                                            <th>Jumlah</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Geser G</td>
+                                            <td id="geser-today">0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tambah G</td>
+                                            <td id="tambah-today">0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Waiting Approval</td>
+                                            <td id="waiting-today">0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Aktivitas Terakhir</h3>
+                            <div class="card-actions">
+                                <button class="btn btn-secondary" id="refresh-activity">
+                                    <i class="fas fa-sync-alt"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="timeline" id="recent-activity">
+                                <!-- Recent activity will be loaded here -->
+                                <div class="timeline-item">
+                                    <div class="timeline-date">Loading...</div>
+                                    <div class="timeline-content">
+                                        <div class="spinner"></div> Memuat aktivitas...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Pengguna Online</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="online-users">
+                                <div class="spinner"></div> Memuat daftar pengguna...
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="sidebar-menu">
-                <a href="#" class="menu-item active" data-section="dashboard">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="#" class="menu-item" data-section="geserG">
-                    <i class="fas fa-exchange-alt"></i>
-                    <span>Geser G</span>
-                </a>
-                <a href="#" class="menu-item" data-section="tambahG">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Tambah G</span>
-                </a>
-                <a href="#" class="menu-item" data-section="dataRekening">
-                    <i class="fas fa-credit-card"></i>
-                    <span>Data Rekening</span>
-                </a>
-                <div class="menu-divider"></div>
-                <a href="#" class="menu-item" data-section="history">
-                    <i class="fas fa-history"></i>
-                    <span>History</span>
-                </a>
-                <a href="#" class="menu-item" data-section="settings">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </a>
+
+            <!-- Geser G Tab -->
+            <div class="tab-content" id="geser-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Form Geser G</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="geser-error" class="alert alert-danger" style="display: none;"></div>
+                        <div id="geser-success" class="alert alert-success" style="display: none;"></div>
+                        
+                        <div class="form-row">
+                            <div class="form-col">
+                                <h4>Rekening Lama</h4>
+                                <div class="form-group">
+                                    <label class="form-label">Nama Bank/E-Wallet</label>
+                                    <select class="form-control" id="geser-bank-lama">
+                                        <option value="">Pilih Bank/E-Wallet</option>
+                                        <option value="SEABANK">SEABANK</option>
+                                        <option value="JAGO">JAGO</option>
+                                        <option value="OVO">OVO</option>
+                                        <option value="LINKAJA">LINKAJA</option>
+                                        <option value="GOPAY">GOPAY</option>
+                                        <option value="MAYBANK">MAYBANK</option>
+                                        <option value="BSI">BSI</option>
+                                        <option value="DANAMON">DANAMON</option>
+                                        <option value="CIMB">CIMB</option>
+                                        <option value="MANDIRI">MANDIRI</option>
+                                        <option value="BRI">BRI</option>
+                                        <option value="DANA">DANA</option>
+                                        <option value="BNI">BNI</option>
+                                        <option value="BCA">BCA</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nama Rekening</label>
+                                    <input type="text" class="form-control" id="geser-nama-lama" placeholder="Nama pemilik rekening">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nomor Rekening</label>
+                                    <input type="text" class="form-control" id="geser-nomor-lama" placeholder="Nomor rekening">
+                                </div>
+                            </div>
+                            
+                            <div class="form-col">
+                                <h4>Rekening Baru</h4>
+                                <div class="form-group">
+                                    <label class="form-label">Nama Bank/E-Wallet</label>
+                                    <select class="form-control" id="geser-bank-baru">
+                                        <option value="">Pilih Bank/E-Wallet</option>
+                                        <option value="SEABANK">SEABANK</option>
+                                        <option value="JAGO">JAGO</option>
+                                        <option value="OVO">OVO</option>
+                                        <option value="LINKAJA">LINKAJA</option>
+                                        <option value="GOPAY">GOPAY</option>
+                                        <option value="MAYBANK">MAYBANK</option>
+                                        <option value="BSI">BSI</option>
+                                        <option value="DANAMON">DANAMON</option>
+                                        <option value="CIMB">CIMB</option>
+                                        <option value="MANDIRI">MANDIRI</option>
+                                        <option value="BRI">BRI</option>
+                                        <option value="DANA">DANA</option>
+                                        <option value="BNI">BNI</option>
+                                        <option value="BCA">BCA</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nama Rekening</label>
+                                    <input type="text" class="form-control" id="geser-nama-baru" placeholder="Nama pemilik rekening">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nomor Rekening</label>
+                                    <input type="text" class="form-control" id="geser-nomor-baru" placeholder="Nomor rekening">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" style="text-align: right; margin-top: 20px;">
+                            <button class="btn btn-primary" id="submit-geser">
+                                <i class="fas fa-check"></i> Konfirmasi Geser G
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tambah G Tab -->
+            <div class="tab-content" id="tambah-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Form Tambah G</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="tambah-error" class="alert alert-danger" style="display: none;"></div>
+                        <div id="tambah-success" class="alert alert-success" style="display: none;"></div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Nama Bank/E-Wallet</label>
+                            <select class="form-control" id="tambah-bank">
+                                <option value="">Pilih Bank/E-Wallet</option>
+                                <option value="SEABANK">SEABANK</option>
+                                <option value="JAGO">JAGO</option>
+                                <option value="OVO">OVO</option>
+                                <option value="LINKAJA">LINKAJA</option>
+                                <option value="GOPAY">GOPAY</option>
+                                <option value="MAYBANK">MAYBANK</option>
+                                <option value="BSI">BSI</option>
+                                <option value="DANAMON">DANAMON</option>
+                                <option value="CIMB">CIMB</option>
+                                <option value="MANDIRI">MANDIRI</option>
+                                <option value="BRI">BRI</option>
+                                <option value="DANA">DANA</option>
+                                <option value="BNI">BNI</option>
+                                <option value="BCA">BCA</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nama Rekening</label>
+                            <input type="text" class="form-control" id="tambah-nama" placeholder="Nama pemilik rekening">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nomor Rekening</label>
+                            <input type="text" class="form-control" id="tambah-nomor" placeholder="Nomor rekening">
+                        </div>
+                        
+                        <div class="form-group" style="text-align: right; margin-top: 20px;">
+                            <button class="btn btn-primary" id="submit-tambah">
+                                <i class="fas fa-check"></i> Konfirmasi Tambah G
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Waiting Tab -->
+            <div class="tab-content" id="waiting-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Daftar Waiting Approval</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-secondary" id="refresh-waiting">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Jenis</th>
+                                        <th>Detail</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="waiting-list">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center;">
+                                            <div class="spinner"></div> Memuat data...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Tab -->
+            <div class="tab-content" id="history-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">History Transaksi</h3>
+                        <div class="card-actions">
+                            <select class="form-control" id="history-filter" style="width: 150px;">
+                                <option value="today">Hari Ini</option>
+                                <option value="yesterday">Kemarin</option>
+                                <option value="week">Minggu Ini</option>
+                                <option value="month">Bulan Ini</option>
+                                <option value="all">Semua</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Jenis</th>
+                                        <th>Detail</th>
+                                        <th>Status</th>
+                                        <th>Disetujui Oleh</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-list">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center;">
+                                            <div class="spinner"></div> Memuat data...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accounts Tab -->
+            <div class="tab-content" id="accounts-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Data Rekening Bank/E-Wallet</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" id="add-account-btn">
+                                <i class="fas fa-plus"></i> Tambah Rekening
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Bank/E-Wallet</th>
+                                        <th>Nama Rekening</th>
+                                        <th>Nomor Rekening</th>
+                                        <th>Status</th>
+                                        <th>Grup</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="accounts-list">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">
+                                            <div class="spinner"></div> Memuat data...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Groups Tab -->
+            <div class="tab-content" id="groups-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Cek Grup Bank</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">Pilih Bank/E-Wallet</label>
+                            <select class="form-control" id="group-bank">
+                                <option value="">Pilih Bank/E-Wallet</option>
+                                <option value="SEABANK">SEABANK</option>
+                                <option value="JAGO">JAGO</option>
+                                <option value="OVO">OVO</option>
+                                <option value="LINKAJA">LINKAJA</option>
+                                <option value="GOPAY">GOPAY</option>
+                                <option value="MAYBANK">MAYBANK</option>
+                                <option value="BSI">BSI</option>
+                                <option value="DANAMON">DANAMON</option>
+                                <option value="CIMB">CIMB</option>
+                                <option value="MANDIRI">MANDIRI</option>
+                                <option value="BRI">BRI</option>
+                                <option value="DANA">DANA</option>
+                                <option value="BNI">BNI</option>
+                                <option value="BCA">BCA</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="text-align: right;">
+                            <button class="btn btn-primary" id="check-group">
+                                <i class="fas fa-search"></i> Cek Grup
+                            </button>
+                        </div>
+                        
+                        <div id="group-result" style="margin-top: 30px; display: none;">
+                            <h4>Hasil Pengecekan Grup</h4>
+                            <div class="alert alert-success" id="group-success" style="display: none;">
+                                <i class="fas fa-check-circle"></i> Semua grup dari G1 sampai G20 lengkap dan tidak ada yang double.
+                            </div>
+                            <div class="alert alert-danger" id="group-error" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i> Terdapat masalah pada grup berikut:
+                            </div>
+                            
+                            <div class="table-responsive" style="margin-top: 20px;">
+                                <table class="table" id="group-table">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Bank</th>
+                                            <th>Nama Rekening</th>
+                                            <th>Nomor Rekening</th>
+                                            <th>Status</th>
+                                            <th>Grup</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="group-list">
+                                        <!-- Group data will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logs Tab -->
+            <div class="tab-content" id="logs-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Log Aktivitas</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-secondary" id="refresh-logs">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Waktu</th>
+                                        <th>User</th>
+                                        <th>Aktivitas</th>
+                                        <th>Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logs-list">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">
+                                            <div class="spinner"></div> Memuat data...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Header -->
-            <div class="header">
-                <h1 class="page-title" id="pageTitle">Dashboard</h1>
-                <div class="user-profile">
-                    <span class="user-name" id="userName">User</span>
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <button class="logout-btn" id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i>
+    <!-- Add Account Modal -->
+    <div id="add-account-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="card" style="width: 500px; max-width: 90%;">
+            <div class="card-header">
+                <h3 class="card-title">Tambah Rekening Baru</h3>
+                <button id="close-add-account" style="background: none; border: none; color: var(--text); font-size: 20px; cursor: pointer;">&times;</button>
+            </div>
+            <div class="card-body">
+                <div id="add-account-error" class="alert alert-danger" style="display: none;"></div>
+                
+                <div class="form-group">
+                    <label class="form-label">Nama Bank/E-Wallet</label>
+                    <select class="form-control" id="add-account-bank">
+                        <option value="">Pilih Bank/E-Wallet</option>
+                        <option value="SEABANK">SEABANK</option>
+                        <option value="JAGO">JAGO</option>
+                        <option value="OVO">OVO</option>
+                        <option value="LINKAJA">LINKAJA</option>
+                        <option value="GOPAY">GOPAY</option>
+                        <option value="MAYBANK">MAYBANK</option>
+                        <option value="BSI">BSI</option>
+                        <option value="DANAMON">DANAMON</option>
+                        <option value="CIMB">CIMB</option>
+                        <option value="MANDIRI">MANDIRI</option>
+                        <option value="BRI">BRI</option>
+                        <option value="DANA">DANA</option>
+                        <option value="BNI">BNI</option>
+                        <option value="BCA">BCA</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nama Rekening</label>
+                    <input type="text" class="form-control" id="add-account-name" placeholder="Nama pemilik rekening">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nomor Rekening</label>
+                    <input type="text" class="form-control" id="add-account-number" placeholder="Nomor rekening">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Grup</label>
+                    <input type="text" class="form-control" id="add-account-group" placeholder="Contoh: 1,3,5,7 atau 2,4,6,8">
+                </div>
+                <div class="form-group" style="text-align: right; margin-top: 20px;">
+                    <button class="btn btn-primary" id="submit-add-account">
+                        <i class="fas fa-save"></i> Simpan Rekening
                     </button>
                 </div>
             </div>
-
-            <!-- Dashboard Section -->
-            <div class="content-section" id="dashboardSection">
-                <div class="cards-container">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Total Geser G</h3>
-                            <div class="card-icon">
-                                <i class="fas fa-exchange-alt"></i>
-                            </div>
-                        </div>
-                        <h2 class="card-value" id="totalGeserG">0</h2>
-                        <p class="card-description">Total transaksi geser G hari ini</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Total Tambah G</h3>
-                            <div class="card-icon">
-                                <i class="fas fa-plus-circle"></i>
-                            </div>
-                        </div>
-                        <h2 class="card-value" id="totalTambahG">0</h2>
-                        <p class="card-description">Total transaksi tambah G hari ini</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Total Rekening</h3>
-                            <div class="card-icon">
-                                <i class="fas fa-credit-card"></i>
-                            </div>
-                        </div>
-                        <h2 class="card-value" id="totalRekening">0</h2>
-                        <p class="card-description">Total rekening terdaftar</p>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <h2 class="form-title"><i class="fas fa-history"></i> Recent Activities</h2>
-                    <div class="table-responsive">
-                        <table class="table" id="recentActivitiesTable">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Type</th>
-                                    <th>Before</th>
-                                    <th>After</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="recentActivitiesBody">
-                                <!-- Data will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Geser G Section -->
-            <div class="content-section" id="geserGSection" style="display: none;">
-                <div class="form-container">
-                    <h2 class="form-title"><i class="fas fa-exchange-alt"></i> Form Geser G</h2>
-                    <form id="geserGForm">
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label">Sebelum - Nama Rekening</label>
-                                    <input type="text" class="form-control" id="geserSebelumNama" required>
-                                </div>
-                            </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label">Sebelum - Nomor Rekening</label>
-                                    <input type="text" class="form-control" id="geserSebelumNomor" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label">Sesudah - Nama Rekening</label>
-                                    <input type="text" class="form-control" id="geserSesudahNama" required>
-                                </div>
-                            </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label">Sesudah - Nomor Rekening</label>
-                                    <input type="text" class="form-control" id="geserSesudahNomor" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Bank/EWallet</label>
-                            <select class="form-control form-select" id="geserBank" required>
-                                <option value="">Select Bank/EWallet</option>
-                                <option value="BCA">BCA</option>
-                                <option value="BRI">BRI</option>
-                                <option value="BNI">BNI</option>
-                                <option value="Mandiri">Mandiri</option>
-                                <option value="DANA">DANA</option>
-                                <option value="OVO">OVO</option>
-                                <option value="GOPAY">GOPAY</option>
-                                <option value="LinkAja">LinkAja</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Simpan Data
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="table-container">
-                    <h2 class="form-title"><i class="fas fa-list"></i> Data Geser G</h2>
-                    <div class="table-responsive">
-                        <table class="table" id="geserGTable">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Bank/EWallet</th>
-                                    <th>Sebelum - Nama</th>
-                                    <th>Sebelum - Nomor</th>
-                                    <th>Sesudah - Nama</th>
-                                    <th>Sesudah - Nomor</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="geserGBody">
-                                <!-- Data will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tambah G Section -->
-            <div class="content-section" id="tambahGSection" style="display: none;">
-                <div class="form-container">
-                    <h2 class="form-title"><i class="fas fa-plus-circle"></i> Form Tambah G</h2>
-                    <form id="tambahGForm">
-                        <div class="form-group">
-                            <label class="form-label">Nama Rekening</label>
-                            <input type="text" class="form-control" id="tambahGNama" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Nomor Rekening</label>
-                            <input type="text" class="form-control" id="tambahGNomor" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Bank/EWallet</label>
-                            <select class="form-control form-select" id="tambahGBank" required>
-                                <option value="">Select Bank/EWallet</option>
-                                <option value="BCA">BCA</option>
-                                <option value="BRI">BRI</option>
-                                <option value="BNI">BNI</option>
-                                <option value="Mandiri">Mandiri</option>
-                                <option value="DANA">DANA</option>
-                                <option value="OVO">OVO</option>
-                                <option value="GOPAY">GOPAY</option>
-                                <option value="LinkAja">LinkAja</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Simpan Data
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="table-container">
-                    <h2 class="form-title"><i class="fas fa-list"></i> Data Tambah G</h2>
-                    <div class="table-responsive">
-                        <table class="table" id="tambahGTable">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Bank/EWallet</th>
-                                    <th>Nama Rekening</th>
-                                    <th>Nomor Rekening</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tambahGBody">
-                                <!-- Data will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Data Rekening Section -->
-            <div class="content-section" id="dataRekeningSection" style="display: none;">
-                <div class="form-container">
-                    <h2 class="form-title"><i class="fas fa-credit-card"></i> Tambah Data Rekening</h2>
-                    <form id="rekeningForm">
-                        <div class="form-group">
-                            <label class="form-label">Nama Rekening</label>
-                            <input type="text" class="form-control" id="rekeningNama" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Nomor Rekening</label>
-                            <input type="text" class="form-control" id="rekeningNomor" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Bank/EWallet</label>
-                            <select class="form-control form-select" id="rekeningBank" required>
-                                <option value="">Select Bank/EWallet</option>
-                                <option value="BCA">BCA</option>
-                                <option value="BRI">BRI</option>
-                                <option value="BNI">BNI</option>
-                                <option value="Mandiri">Mandiri</option>
-                                <option value="DANA">DANA</option>
-                                <option value="OVO">OVO</option>
-                                <option value="GOPAY">GOPAY</option>
-                                <option value="LinkAja">LinkAja</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Status</label>
-                            <select class="form-control form-select" id="rekeningStatus" required>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Simpan Data
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="table-container">
-                    <h2 class="form-title"><i class="fas fa-list"></i> Data Rekening</h2>
-                    <div class="table-responsive">
-                        <table class="table" id="rekeningTable">
-                            <thead>
-                                <tr>
-                                    <th>Bank/EWallet</th>
-                                    <th>Nama Rekening</th>
-                                    <th>Nomor Rekening</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="rekeningBody">
-                                <!-- Data will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- History Section -->
-            <div class="content-section" id="historySection" style="display: none;">
-                <div class="table-container">
-                    <h2 class="form-title"><i class="fas fa-history"></i> History Transaksi</h2>
-                    <div class="form-group">
-                        <select class="form-control form-select" id="historyFilter" style="width: 200px; margin-bottom: 20px;">
-                            <option value="all">All Transactions</option>
-                            <option value="geser">Geser G</option>
-                            <option value="tambah">Tambah G</option>
-                        </select>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table" id="historyTable">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Type</th>
-                                    <th>Details</th>
-                                    <th>User</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="historyBody">
-                                <!-- Data will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Settings Section -->
-            <div class="content-section" id="settingsSection" style="display: none;">
-                <div class="form-container">
-                    <h2 class="form-title"><i class="fas fa-user-cog"></i> User Settings</h2>
-                    <form id="userSettingsForm">
-                        <div class="form-group">
-                            <label class="form-label">Display Name</label>
-                            <input type="text" class="form-control" id="userDisplayName" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" id="userEmail" disabled>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Update Profile
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal" id="editModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="editModalTitle">Edit Data</h3>
-                <button class="modal-close" id="editModalClose">&times;</button>
-            </div>
-            <div class="modal-body" id="editModalBody">
-                <!-- Content will be loaded here -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="editModalCancel">Cancel</button>
-                <button class="btn btn-primary" id="editModalSave">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal" id="deleteModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Confirm Delete</h3>
-                <button class="modal-close" id="deleteModalClose">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this record? This action cannot be undone.</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="deleteModalCancel">Cancel</button>
-                <button class="btn btn-danger" id="deleteModalConfirm">Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <i class="fas fa-check-circle"></i>
-        <span id="notificationMessage">Operation successful</span>
     </div>
 
     <script>
-        // Firebase Configuration
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCYDX9-p956ZZSXsX7jzMPhUh9YF2tzGtE",
             authDomain: "geser-grup-bank-angkabet167.firebaseapp.com",
@@ -1206,64 +1161,12 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const auth = firebase.auth();
-        const analytics = firebase.analytics();
-
-        // Google Provider
         const provider = new firebase.auth.GoogleAuthProvider();
 
-        // DOM Elements
-        const loginScreen = document.getElementById('loginScreen');
-        const appContainer = document.getElementById('appContainer');
-        const googleLoginBtn = document.getElementById('googleLoginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const userName = document.getElementById('userName');
-        const userAvatar = document.getElementById('userAvatar');
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const sidebar = document.getElementById('sidebar');
-        const menuItems = document.querySelectorAll('.menu-item');
-        const contentSections = document.querySelectorAll('.content-section');
-        const pageTitle = document.getElementById('pageTitle');
-
-        // Forms
-        const geserGForm = document.getElementById('geserGForm');
-        const tambahGForm = document.getElementById('tambahGForm');
-        const rekeningForm = document.getElementById('rekeningForm');
-        const userSettingsForm = document.getElementById('userSettingsForm');
-
-        // Tables
-        const recentActivitiesBody = document.getElementById('recentActivitiesBody');
-        const geserGBody = document.getElementById('geserGBody');
-        const tambahGBody = document.getElementById('tambahGBody');
-        const rekeningBody = document.getElementById('rekeningBody');
-        const historyBody = document.getElementById('historyBody');
-
-        // Modals
-        const editModal = document.getElementById('editModal');
-        const editModalTitle = document.getElementById('editModalTitle');
-        const editModalBody = document.getElementById('editModalBody');
-        const editModalSave = document.getElementById('editModalSave');
-        const editModalClose = document.getElementById('editModalClose');
-        const editModalCancel = document.getElementById('editModalCancel');
-        
-        const deleteModal = document.getElementById('deleteModal');
-        const deleteModalConfirm = document.getElementById('deleteModalConfirm');
-        const deleteModalClose = document.getElementById('deleteModalClose');
-        const deleteModalCancel = document.getElementById('deleteModalCancel');
-
-        // Notification
-        const notification = document.getElementById('notification');
-        const notificationMessage = document.getElementById('notificationMessage');
-
-        // Variables
-        let currentUser = null;
-        let editingId = null;
-        let deletingId = null;
-        let editingType = null;
-
-        // Star Animation
+        // Create stars background
         function createStars() {
             const starsContainer = document.getElementById('stars');
             starsContainer.innerHTML = '';
@@ -1271,7 +1174,7 @@
             // Create twinkling stars
             for (let i = 0; i < 100; i++) {
                 const star = document.createElement('div');
-                star.classList.add('star');
+                star.className = 'star';
                 star.style.width = `${Math.random() * 3}px`;
                 star.style.height = star.style.width;
                 star.style.left = `${Math.random() * 100}%`;
@@ -1284,706 +1187,1137 @@
             // Create falling stars
             for (let i = 0; i < 5; i++) {
                 const fallingStar = document.createElement('div');
-                fallingStar.classList.add('falling-star');
+                fallingStar.className = 'falling-star';
                 fallingStar.style.left = `${Math.random() * 100}%`;
                 fallingStar.style.top = `${Math.random() * 100}%`;
                 fallingStar.style.setProperty('--fall-duration', `${5 + Math.random() * 10}s`);
-                fallingStar.style.animationDelay = `${Math.random() * 20}s`;
                 starsContainer.appendChild(fallingStar);
+                
+                // Random delay for falling stars
+                fallingStar.style.animationDelay = `${Math.random() * 10}s`;
             }
         }
 
-        // Show Notification
-        function showNotification(message, type = 'success') {
-            notification.className = `notification ${type} show`;
-            notificationMessage.textContent = message;
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Format Date
-        function formatDate(timestamp) {
-            if (!timestamp) return '-';
-            const date = new Date(timestamp);
-            return date.toLocaleString();
-        }
-
-        // Validate Bank Account
-        function validateBankAccount(bank, accountNumber, accountName) {
-            // Simple validation - in a real app, you would have more complex validation
-            if (!accountNumber || !accountName) {
-                return { valid: false, message: 'Nomor rekening dan nama rekening harus diisi' };
-            }
-            
-            if (bank === 'BCA' && accountNumber.length !== 10) {
-                return { valid: false, message: 'Nomor rekening BCA harus 10 digit' };
-            }
-            
-            if (bank === 'BRI' && accountNumber.length !== 15) {
-                return { valid: false, message: 'Nomor rekening BRI harus 15 digit' };
-            }
-            
-            if (bank === 'BNI' && accountNumber.length !== 10) {
-                return { valid: false, message: 'Nomor rekening BNI harus 10 digit' };
-            }
-            
-            if (bank === 'Mandiri' && accountNumber.length !== 13) {
-                return { valid: false, message: 'Nomor rekening Mandiri harus 13 digit' };
-            }
-            
-            // E-wallets typically have different formats
-            if (['DANA', 'OVO', 'GOPAY', 'LinkAja'].includes(bank) && accountNumber.length < 10) {
-                return { valid: false, message: 'Nomor e-wallet terlalu pendek' };
-            }
-            
-            return { valid: true };
-        }
-
-        // Load Data
-        function loadData() {
-            // Load Geser G Data
-            database.ref('geserG').on('value', (snapshot) => {
-                geserGBody.innerHTML = '';
-                let count = 0;
-                snapshot.forEach((childSnapshot) => {
-                    const data = childSnapshot.val();
-                    if (data.userId === currentUser.uid) {
-                        count++;
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${formatDate(data.timestamp)}</td>
-                            <td>${data.bank}</td>
-                            <td>${data.sebelumNama}</td>
-                            <td>${data.sebelumNomor}</td>
-                            <td>${data.sesudahNama}</td>
-                            <td>${data.sesudahNomor}</td>
-                            <td><span class="badge ${data.status === 'active' ? 'badge-success' : 'badge-warning'}">${data.status}</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <button class="action-btn edit" data-id="${childSnapshot.key}" data-type="geserG">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" data-id="${childSnapshot.key}" data-type="geserG">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        `;
-                        geserGBody.appendChild(row);
-                    }
-                });
-                document.getElementById('totalGeserG').textContent = count;
-                
-                // Add event listeners to action buttons
-                document.querySelectorAll('.action-btn.edit').forEach(btn => {
-                    btn.addEventListener('click', openEditModal);
-                });
-                
-                document.querySelectorAll('.action-btn.delete').forEach(btn => {
-                    btn.addEventListener('click', openDeleteModal);
-                });
-            });
-            
-            // Load Tambah G Data
-            database.ref('tambahG').on('value', (snapshot) => {
-                tambahGBody.innerHTML = '';
-                let count = 0;
-                snapshot.forEach((childSnapshot) => {
-                    const data = childSnapshot.val();
-                    if (data.userId === currentUser.uid) {
-                        count++;
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${formatDate(data.timestamp)}</td>
-                            <td>${data.bank}</td>
-                            <td>${data.nama}</td>
-                            <td>${data.nomor}</td>
-                            <td><span class="badge ${data.status === 'active' ? 'badge-success' : 'badge-warning'}">${data.status}</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <button class="action-btn edit" data-id="${childSnapshot.key}" data-type="tambahG">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" data-id="${childSnapshot.key}" data-type="tambahG">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        `;
-                        tambahGBody.appendChild(row);
-                    }
-                });
-                document.getElementById('totalTambahG').textContent = count;
-                
-                // Add event listeners to action buttons
-                document.querySelectorAll('.action-btn.edit').forEach(btn => {
-                    btn.addEventListener('click', openEditModal);
-                });
-                
-                document.querySelectorAll('.action-btn.delete').forEach(btn => {
-                    btn.addEventListener('click', openDeleteModal);
-                });
-            });
-            
-            // Load Rekening Data
-            database.ref('rekening').on('value', (snapshot) => {
-                rekeningBody.innerHTML = '';
-                let count = 0;
-                snapshot.forEach((childSnapshot) => {
-                    const data = childSnapshot.val();
-                    if (data.userId === currentUser.uid) {
-                        count++;
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${data.bank}</td>
-                            <td>${data.nama}</td>
-                            <td>${data.nomor}</td>
-                            <td><span class="badge ${data.status === 'active' ? 'badge-success' : 'badge-warning'}">${data.status}</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <button class="action-btn edit" data-id="${childSnapshot.key}" data-type="rekening">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" data-id="${childSnapshot.key}" data-type="rekening">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        `;
-                        rekeningBody.appendChild(row);
-                    }
-                });
-                document.getElementById('totalRekening').textContent = count;
-                
-                // Add event listeners to action buttons
-                document.querySelectorAll('.action-btn.edit').forEach(btn => {
-                    btn.addEventListener('click', openEditModal);
-                });
-                
-                document.querySelectorAll('.action-btn.delete').forEach(btn => {
-                    btn.addEventListener('click', openDeleteModal);
-                });
-            });
-            
-            // Load Recent Activities
-            database.ref('activities').orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
-                recentActivitiesBody.innerHTML = '';
-                snapshot.forEach((childSnapshot) => {
-                    const data = childSnapshot.val();
-                    if (data.userId === currentUser.uid) {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${formatDate(data.timestamp)}</td>
-                            <td>${data.type === 'geserG' ? 'Geser G' : 'Tambah G'}</td>
-                            <td>${data.type === 'geserG' ? `${data.sebelumNama} (${data.sebelumNomor})` : '-'}</td>
-                            <td>${data.type === 'geserG' ? `${data.sesudahNama} (${data.sesudahNomor})` : `${data.nama} (${data.nomor})`}</td>
-                            <td><span class="badge ${data.status === 'active' ? 'badge-success' : 'badge-warning'}">${data.status}</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <button class="action-btn edit" data-id="${childSnapshot.key}" data-type="${data.type}">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        `;
-                        recentActivitiesBody.appendChild(row);
-                    }
-                });
-                
-                // Add event listeners to action buttons
-                document.querySelectorAll('.action-btn.edit').forEach(btn => {
-                    btn.addEventListener('click', openEditModal);
-                });
-            });
-            
-            // Load History
-            database.ref('activities').orderByChild('timestamp').on('value', (snapshot) => {
-                historyBody.innerHTML = '';
-                snapshot.forEach((childSnapshot) => {
-                    const data = childSnapshot.val();
-                    if (data.userId === currentUser.uid) {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${formatDate(data.timestamp)}</td>
-                            <td>${data.type === 'geserG' ? 'Geser G' : 'Tambah G'}</td>
-                            <td>${data.type === 'geserG' ? 
-                                `From: ${data.sebelumNama} (${data.sebelumNomor}) → To: ${data.sesudahNama} (${data.sesudahNomor})` : 
-                                `Added: ${data.nama} (${data.nomor})`}</td>
-                            <td>${data.userName}</td>
-                            <td><span class="badge ${data.status === 'active' ? 'badge-success' : 'badge-warning'}">${data.status}</span></td>
-                        `;
-                        historyBody.appendChild(row);
-                    }
-                });
-            });
-        }
-
-        // Open Edit Modal
-        function openEditModal(e) {
-            const id = e.currentTarget.getAttribute('data-id');
-            const type = e.currentTarget.getAttribute('data-type');
-            editingId = id;
-            editingType = type;
-            
-            database.ref(`${type}/${id}`).once('value').then((snapshot) => {
-                const data = snapshot.val();
-                
-                if (type === 'geserG') {
-                    editModalTitle.textContent = 'Edit Geser G';
-                    editModalBody.innerHTML = `
-                        <div class="form-group">
-                            <label class="form-label">Sebelum - Nama Rekening</label>
-                            <input type="text" class="form-control" id="editSebelumNama" value="${data.sebelumNama}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Sebelum - Nomor Rekening</label>
-                            <input type="text" class="form-control" id="editSebelumNomor" value="${data.sebelumNomor}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Sesudah - Nama Rekening</label>
-                            <input type="text" class="form-control" id="editSesudahNama" value="${data.sesudahNama}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Sesudah - Nomor Rekening</label>
-                            <input type="text" class="form-control" id="editSesudahNomor" value="${data.sesudahNomor}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Bank/EWallet</label>
-                            <select class="form-control form-select" id="editBank" required>
-                                <option value="BCA" ${data.bank === 'BCA' ? 'selected' : ''}>BCA</option>
-                                <option value="BRI" ${data.bank === 'BRI' ? 'selected' : ''}>BRI</option>
-                                <option value="BNI" ${data.bank === 'BNI' ? 'selected' : ''}>BNI</option>
-                                <option value="Mandiri" ${data.bank === 'Mandiri' ? 'selected' : ''}>Mandiri</option>
-                                <option value="DANA" ${data.bank === 'DANA' ? 'selected' : ''}>DANA</option>
-                                <option value="OVO" ${data.bank === 'OVO' ? 'selected' : ''}>OVO</option>
-                                <option value="GOPAY" ${data.bank === 'GOPAY' ? 'selected' : ''}>GOPAY</option>
-                                <option value="LinkAja" ${data.bank === 'LinkAja' ? 'selected' : ''}>LinkAja</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Status</label>
-                            <select class="form-control form-select" id="editStatus" required>
-                                <option value="active" ${data.status === 'active' ? 'selected' : ''}>Active</option>
-                                <option value="inactive" ${data.status === 'inactive' ? 'selected' : ''}>Inactive</option>
-                            </select>
-                        </div>
-                    `;
-                } else if (type === 'tambahG') {
-                    editModalTitle.textContent = 'Edit Tambah G';
-                    editModalBody.innerHTML = `
-                        <div class="form-group">
-                            <label class="form-label">Nama Rekening</label>
-                            <input type="text" class="form-control" id="editNama" value="${data.nama}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Nomor Rekening</label>
-                            <input type="text" class="form-control" id="editNomor" value="${data.nomor}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Bank/EWallet</label>
-                            <select class="form-control form-select" id="editBank" required>
-                                <option value="BCA" ${data.bank === 'BCA' ? 'selected' : ''}>BCA</option>
-                                <option value="BRI" ${data.bank === 'BRI' ? 'selected' : ''}>BRI</option>
-                                <option value="BNI" ${data.bank === 'BNI' ? 'selected' : ''}>BNI</option>
-                                <option value="Mandiri" ${data.bank === 'Mandiri' ? 'selected' : ''}>Mandiri</option>
-                                <option value="DANA" ${data.bank === 'DANA' ? 'selected' : ''}>DANA</option>
-                                <option value="OVO" ${data.bank === 'OVO' ? 'selected' : ''}>OVO</option>
-                                <option value="GOPAY" ${data.bank === 'GOPAY' ? 'selected' : ''}>GOPAY</option>
-                                <option value="LinkAja" ${data.bank === 'LinkAja' ? 'selected' : ''}>LinkAja</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Status</label>
-                            <select class="form-control form-select" id="editStatus" required>
-                                <option value="active" ${data.status === 'active' ? 'selected' : ''}>Active</option>
-                                <option value="inactive" ${data.status === 'inactive' ? 'selected' : ''}>Inactive</option>
-                            </select>
-                        </div>
-                    `;
-                } else if (type === 'rekening') {
-                    editModalTitle.textContent = 'Edit Rekening';
-                    editModalBody.innerHTML = `
-                        <div class="form-group">
-                            <label class="form-label">Nama Rekening</label>
-                            <input type="text" class="form-control" id="editNama" value="${data.nama}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Nomor Rekening</label>
-                            <input type="text" class="form-control" id="editNomor" value="${data.nomor}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Bank/EWallet</label>
-                            <select class="form-control form-select" id="editBank" required>
-                                <option value="BCA" ${data.bank === 'BCA' ? 'selected' : ''}>BCA</option>
-                                <option value="BRI" ${data.bank === 'BRI' ? 'selected' : ''}>BRI</option>
-                                <option value="BNI" ${data.bank === 'BNI' ? 'selected' : ''}>BNI</option>
-                                <option value="Mandiri" ${data.bank === 'Mandiri' ? 'selected' : ''}>Mandiri</option>
-                                <option value="DANA" ${data.bank === 'DANA' ? 'selected' : ''}>DANA</option>
-                                <option value="OVO" ${data.bank === 'OVO' ? 'selected' : ''}>OVO</option>
-                                <option value="GOPAY" ${data.bank === 'GOPAY' ? 'selected' : ''}>GOPAY</option>
-                                <option value="LinkAja" ${data.bank === 'LinkAja' ? 'selected' : ''}>LinkAja</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Status</label>
-                            <select class="form-control form-select" id="editStatus" required>
-                                <option value="active" ${data.status === 'active' ? 'selected' : ''}>Active</option>
-                                <option value="inactive" ${data.status === 'inactive' ? 'selected' : ''}>Inactive</option>
-                            </select>
-                        </div>
-                    `;
-                }
-                
-                editModal.classList.add('active');
-            });
-        }
-
-        // Open Delete Modal
-        function openDeleteModal(e) {
-            deletingId = e.currentTarget.getAttribute('data-id');
-            editingType = e.currentTarget.getAttribute('data-type');
-            deleteModal.classList.add('active');
-        }
-
-        // Save Edit
-        function saveEdit() {
-            let updates = {};
-            
-            if (editingType === 'geserG') {
-                const validation = validateBankAccount(
-                    document.getElementById('editBank').value,
-                    document.getElementById('editSebelumNomor').value,
-                    document.getElementById('editSebelumNama').value
-                );
-                
-                if (!validation.valid) {
-                    showNotification(validation.message, 'error');
-                    return;
-                }
-                
-                updates = {
-                    sebelumNama: document.getElementById('editSebelumNama').value,
-                    sebelumNomor: document.getElementById('editSebelumNomor').value,
-                    sesudahNama: document.getElementById('editSesudahNama').value,
-                    sesudahNomor: document.getElementById('editSesudahNomor').value,
-                    bank: document.getElementById('editBank').value,
-                    status: document.getElementById('editStatus').value,
-                    updatedAt: Date.now()
-                };
-            } else if (editingType === 'tambahG' || editingType === 'rekening') {
-                const validation = validateBankAccount(
-                    document.getElementById('editBank').value,
-                    document.getElementById('editNomor').value,
-                    document.getElementById('editNama').value
-                );
-                
-                if (!validation.valid) {
-                    showNotification(validation.message, 'error');
-                    return;
-                }
-                
-                updates = {
-                    nama: document.getElementById('editNama').value,
-                    nomor: document.getElementById('editNomor').value,
-                    bank: document.getElementById('editBank').value,
-                    status: document.getElementById('editStatus').value,
-                    updatedAt: Date.now()
-                };
-            }
-            
-            database.ref(`${editingType}/${editingId}`).update(updates)
-                .then(() => {
-                    showNotification('Data updated successfully');
-                    editModal.classList.remove('active');
-                })
-                .catch((error) => {
-                    showNotification('Error updating data: ' + error.message, 'error');
-                });
-        }
-
-        // Delete Record
-        function deleteRecord() {
-            database.ref(`${editingType}/${deletingId}`).remove()
-                .then(() => {
-                    showNotification('Data deleted successfully');
-                    deleteModal.classList.remove('active');
-                })
-                .catch((error) => {
-                    showNotification('Error deleting data: ' + error.message, 'error');
-                });
-        }
-
-        // Switch Section
-        function switchSection(sectionId) {
-            contentSections.forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            document.getElementById(sectionId + 'Section').style.display = 'block';
-            pageTitle.textContent = document.querySelector(`[data-section="${sectionId}"] span`).textContent;
-            
-            // Update active menu item
-            menuItems.forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
-        }
-
-        // Initialize App
-        function initApp() {
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
             createStars();
             
-            // Auth State Listener
-            auth.onAuthStateChanged((user) => {
+            // Check auth state
+            auth.onAuthStateChanged(user => {
                 if (user) {
                     // User is signed in
-                    currentUser = user;
-                    loginScreen.style.display = 'none';
-                    appContainer.style.display = 'flex';
-                    
-                    // Set user info
-                    userName.textContent = user.displayName || user.email;
-                    userAvatar.textContent = user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase();
-                    
-                    // Load data
-                    loadData();
-                    
-                    // Load user settings
-                    if (user.displayName) {
-                        document.getElementById('userDisplayName').value = user.displayName;
-                    }
-                    document.getElementById('userEmail').value = user.email;
+                    showDashboard(user);
+                    setupDatabaseListeners(user);
                 } else {
                     // User is signed out
-                    currentUser = null;
-                    loginScreen.style.display = 'flex';
-                    appContainer.style.display = 'none';
+                    showLoginPage();
                 }
             });
             
-            // Google Login
-            googleLoginBtn.addEventListener('click', () => {
-                auth.signInWithPopup(provider)
-                    .then((result) => {
-                        // User signed in
-                        showNotification('Login successful');
-                    })
-                    .catch((error) => {
-                        showNotification('Login error: ' + error.message, 'error');
-                    });
+            // Setup login button
+            document.getElementById('google-login').addEventListener('click', () => {
+                auth.signInWithPopup(provider).catch(error => {
+                    document.getElementById('login-error').textContent = error.message;
+                    document.getElementById('login-error').style.display = 'block';
+                });
             });
             
-            // Logout
-            logoutBtn.addEventListener('click', () => {
-                auth.signOut()
-                    .then(() => {
-                        showNotification('Logged out successfully');
-                    })
-                    .catch((error) => {
-                        showNotification('Logout error: ' + error.message, 'error');
-                    });
+            // Setup logout button
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                auth.signOut();
             });
             
-            // Mobile Menu Toggle
-            mobileMenuBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-            });
-            
-            // Menu Item Click
-            menuItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const section = item.getAttribute('data-section');
-                    switchSection(section);
+            // Setup tab navigation
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                     
-                    // Close sidebar on mobile
-                    if (window.innerWidth < 768) {
-                        sidebar.classList.remove('active');
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Setup form submissions
+            document.getElementById('submit-geser').addEventListener('click', submitGeserG);
+            document.getElementById('submit-tambah').addEventListener('click', submitTambahG);
+            document.getElementById('check-group').addEventListener('click', checkGroup);
+            document.getElementById('add-account-btn').addEventListener('click', showAddAccountModal);
+            document.getElementById('close-add-account').addEventListener('click', hideAddAccountModal);
+            document.getElementById('submit-add-account').addEventListener('click', submitAddAccount);
+            
+            // Setup refresh buttons
+            document.getElementById('refresh-waiting').addEventListener('click', refreshWaiting);
+            document.getElementById('refresh-activity').addEventListener('click', refreshActivity);
+            document.getElementById('refresh-logs').addEventListener('click', refreshLogs);
+            
+            // Setup history filter
+            document.getElementById('history-filter').addEventListener('change', refreshHistory);
+        });
+
+        // Show login page
+        function showLoginPage() {
+            document.getElementById('login-page').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+        }
+
+        // Show dashboard
+        function showDashboard(user) {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            
+            // Set user info
+            document.getElementById('user-name').textContent = user.displayName || user.email;
+            document.getElementById('user-avatar').textContent = user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase();
+            
+            // Load initial data
+            refreshWaiting();
+            refreshActivity();
+            refreshHistory();
+            refreshAccounts();
+            refreshLogs();
+            updateStats();
+        }
+
+        // Setup database listeners
+        function setupDatabaseListeners(user) {
+            // Listen for waiting transactions count
+            database.ref('waiting').on('value', snapshot => {
+                const count = snapshot.numChildren();
+                document.getElementById('waiting-badge').textContent = count;
+                document.getElementById('waiting-today').textContent = count;
+            });
+            
+            // Listen for geserG count today
+            const today = new Date().toISOString().split('T')[0];
+            database.ref('history').orderByChild('date').equalTo(today).on('value', snapshot => {
+                let geserCount = 0;
+                let tambahCount = 0;
+                
+                snapshot.forEach(child => {
+                    if (child.val().type === 'geser') {
+                        geserCount++;
+                    } else if (child.val().type === 'tambah') {
+                        tambahCount++;
                     }
                 });
-            });
-            
-            // Modal Close
-            editModalClose.addEventListener('click', () => {
-                editModal.classList.remove('active');
-            });
-            
-            editModalCancel.addEventListener('click', () => {
-                editModal.classList.remove('active');
-            });
-            
-            deleteModalClose.addEventListener('click', () => {
-                deleteModal.classList.remove('active');
-            });
-            
-            deleteModalCancel.addEventListener('click', () => {
-                deleteModal.classList.remove('active');
-            });
-            
-            // Modal Save/Delete
-            editModalSave.addEventListener('click', saveEdit);
-            deleteModalConfirm.addEventListener('click', deleteRecord);
-            
-            // Form Submissions
-            geserGForm.addEventListener('submit', (e) => {
-                e.preventDefault();
                 
-                const validation = validateBankAccount(
-                    document.getElementById('geserBank').value,
-                    document.getElementById('geserSebelumNomor').value,
-                    document.getElementById('geserSebelumNama').value
-                );
-                
-                if (!validation.valid) {
-                    showNotification(validation.message, 'error');
-                    return;
-                }
-                
-                const newData = {
-                    sebelumNama: document.getElementById('geserSebelumNama').value,
-                    sebelumNomor: document.getElementById('geserSebelumNomor').value,
-                    sesudahNama: document.getElementById('geserSesudahNama').value,
-                    sesudahNomor: document.getElementById('geserSesudahNomor').value,
-                    bank: document.getElementById('geserBank').value,
-                    status: 'active',
-                    userId: currentUser.uid,
-                    userName: currentUser.displayName || currentUser.email,
-                    timestamp: Date.now(),
-                    updatedAt: Date.now()
-                };
-                
-                database.ref('geserG').push(newData)
-                    .then(() => {
-                        // Also add to activities
-                        database.ref('activities').push({
-                            ...newData,
-                            type: 'geserG'
-                        });
-                        
-                        showNotification('Geser G data saved successfully');
-                        geserGForm.reset();
-                    })
-                    .catch((error) => {
-                        showNotification('Error saving data: ' + error.message, 'error');
+                document.getElementById('geser-today').textContent = geserCount;
+                document.getElementById('tambah-today').textContent = tambahCount;
+            });
+            
+            // Listen for online users
+            const userStatusRef = database.ref('status/' + user.uid);
+            const usersRef = database.ref('users');
+            
+            // Set user status to online
+            userStatusRef.set({
+                status: 'online',
+                lastChanged: firebase.database.ServerValue.TIMESTAMP,
+                name: user.displayName || user.email
+            });
+            
+            // Set user status to offline when disconnected
+            userStatusRef.onDisconnect().set({
+                status: 'offline',
+                lastChanged: firebase.database.ServerValue.TIMESTAMP,
+                name: user.displayName || user.email
+            });
+            
+            // Listen for online users
+            database.ref('status').on('value', snapshot => {
+                const users = [];
+                snapshot.forEach(child => {
+                    users.push({
+                        id: child.key,
+                        ...child.val()
                     });
-            });
-            
-            tambahGForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const validation = validateBankAccount(
-                    document.getElementById('tambahGBank').value,
-                    document.getElementById('tambahGNomor').value,
-                    document.getElementById('tambahGNama').value
-                );
-                
-                if (!validation.valid) {
-                    showNotification(validation.message, 'error');
-                    return;
-                }
-                
-                const newData = {
-                    nama: document.getElementById('tambahGNama').value,
-                    nomor: document.getElementById('tambahGNomor').value,
-                    bank: document.getElementById('tambahGBank').value,
-                    status: 'active',
-                    userId: currentUser.uid,
-                    userName: currentUser.displayName || currentUser.email,
-                    timestamp: Date.now(),
-                    updatedAt: Date.now()
-                };
-                
-                database.ref('tambahG').push(newData)
-                    .then(() => {
-                        // Also add to activities
-                        database.ref('activities').push({
-                            ...newData,
-                            type: 'tambahG'
-                        });
-                        
-                        showNotification('Tambah G data saved successfully');
-                        tambahGForm.reset();
-                    })
-                    .catch((error) => {
-                        showNotification('Error saving data: ' + error.message, 'error');
-                    });
-            });
-            
-            rekeningForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const validation = validateBankAccount(
-                    document.getElementById('rekeningBank').value,
-                    document.getElementById('rekeningNomor').value,
-                    document.getElementById('rekeningNama').value
-                );
-                
-                if (!validation.valid) {
-                    showNotification(validation.message, 'error');
-                    return;
-                }
-                
-                const newData = {
-                    nama: document.getElementById('rekeningNama').value,
-                    nomor: document.getElementById('rekeningNomor').value,
-                    bank: document.getElementById('rekeningBank').value,
-                    status: document.getElementById('rekeningStatus').value,
-                    userId: currentUser.uid,
-                    userName: currentUser.displayName || currentUser.email,
-                    timestamp: Date.now(),
-                    updatedAt: Date.now()
-                };
-                
-                database.ref('rekening').push(newData)
-                    .then(() => {
-                        showNotification('Rekening data saved successfully');
-                        rekeningForm.reset();
-                    })
-                    .catch((error) => {
-                        showNotification('Error saving data: ' + error.message, 'error');
-                    });
-            });
-            
-            userSettingsForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const displayName = document.getElementById('userDisplayName').value;
-                
-                currentUser.updateProfile({
-                    displayName: displayName
-                }).then(() => {
-                    showNotification('Profile updated successfully');
-                    userName.textContent = displayName;
-                    userAvatar.textContent = displayName.charAt(0).toUpperCase();
-                }).catch((error) => {
-                    showNotification('Error updating profile: ' + error.message, 'error');
                 });
-            });
-            
-            // History Filter
-            document.getElementById('historyFilter').addEventListener('change', (e) => {
-                const filter = e.target.value;
-                const rows = document.querySelectorAll('#historyBody tr');
                 
-                rows.forEach(row => {
-                    const type = row.querySelector('td:nth-child(2)').textContent.trim();
-                    
-                    if (filter === 'all' || 
-                        (filter === 'geser' && type === 'Geser G') || 
-                        (filter === 'tambah' && type === 'Tambah G')) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
+                displayOnlineUsers(users);
             });
         }
 
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initApp);
+        // Display online users
+        function displayOnlineUsers(users) {
+            const onlineUsersContainer = document.getElementById('online-users');
+            onlineUsersContainer.innerHTML = '';
+            
+            if (users.length === 0) {
+                onlineUsersContainer.innerHTML = '<p>Tidak ada pengguna online</p>';
+                return;
+            }
+            
+            users.forEach(user => {
+                const userElement = document.createElement('div');
+                userElement.style.display = 'flex';
+                userElement.style.alignItems = 'center';
+                userElement.style.marginBottom = '10px';
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'user-avatar';
+                avatar.textContent = user.name ? user.name.charAt(0).toUpperCase() : 'U';
+                avatar.style.marginRight = '10px';
+                
+                const info = document.createElement('div');
+                info.style.flex = '1';
+                
+                const name = document.createElement('div');
+                name.textContent = user.name || 'Unknown User';
+                name.style.fontWeight = '500';
+                
+                const status = document.createElement('div');
+                status.style.fontSize = '12px';
+                status.style.color = user.status === 'online' ? '#28A745' : '#DC3545';
+                
+                if (user.status === 'online') {
+                    status.textContent = 'Online';
+                    if (user.lastChanged) {
+                        status.textContent += ' (Aktif sekarang)';
+                    }
+                } else {
+                    status.textContent = 'Offline';
+                    if (user.lastChanged) {
+                        const lastActive = new Date(user.lastChanged);
+                        status.textContent += ` (Terakhir aktif: ${lastActive.toLocaleTimeString()})`;
+                    }
+                }
+                
+                info.appendChild(name);
+                info.appendChild(status);
+                
+                userElement.appendChild(avatar);
+                userElement.appendChild(info);
+                
+                onlineUsersContainer.appendChild(userElement);
+            });
+        }
+
+        // Submit Geser G form
+        function submitGeserG() {
+            const bankLama = document.getElementById('geser-bank-lama').value;
+            const namaLama = document.getElementById('geser-nama-lama').value;
+            const nomorLama = document.getElementById('geser-nomor-lama').value;
+            const bankBaru = document.getElementById('geser-bank-baru').value;
+            const namaBaru = document.getElementById('geser-nama-baru').value;
+            const nomorBaru = document.getElementById('geser-nomor-baru').value;
+            
+            const errorContainer = document.getElementById('geser-error');
+            errorContainer.style.display = 'none';
+            
+            // Validate form
+            if (!bankLama || !namaLama || !nomorLama || !bankBaru || !namaBaru || !nomorBaru) {
+                errorContainer.textContent = 'Semua field harus diisi!';
+                errorContainer.style.display = 'block';
+                return;
+            }
+            
+            // Check if account exists (in a real app, you would verify with your database)
+            // For now, we'll just proceed
+            
+            // Create transaction in waiting
+            const user = auth.currentUser;
+            const transactionId = database.ref().child('waiting').push().key;
+            const transactionData = {
+                type: 'geser',
+                from: {
+                    bank: bankLama,
+                    name: namaLama,
+                    number: nomorLama
+                },
+                to: {
+                    bank: bankBaru,
+                    name: namaBaru,
+                    number: nomorBaru
+                },
+                submittedBy: {
+                    uid: user.uid,
+                    name: user.displayName || user.email,
+                    email: user.email
+                },
+                submittedAt: firebase.database.ServerValue.TIMESTAMP,
+                status: 'pending'
+            };
+            
+            // Add to waiting list
+            database.ref('waiting/' + transactionId).set(transactionData)
+                .then(() => {
+                    // Show success message
+                    const successContainer = document.getElementById('geser-success');
+                    successContainer.innerHTML = '<i class="fas fa-check-circle"></i> Permintaan geser G berhasil diajukan dan menunggu persetujuan!';
+                    successContainer.style.display = 'block';
+                    
+                    // Clear form
+                    document.getElementById('geser-bank-lama').value = '';
+                    document.getElementById('geser-nama-lama').value = '';
+                    document.getElementById('geser-nomor-lama').value = '';
+                    document.getElementById('geser-bank-baru').value = '';
+                    document.getElementById('geser-nama-baru').value = '';
+                    document.getElementById('geser-nomor-baru').value = '';
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        successContainer.style.display = 'none';
+                    }, 5000);
+                    
+                    // Add to logs
+                    addLog(`Mengajukan permintaan geser G dari ${bankLama} ${nomorLama} ke ${bankBaru} ${nomorBaru}`);
+                    
+                    // Refresh waiting list
+                    refreshWaiting();
+                })
+                .catch(error => {
+                    errorContainer.textContent = error.message;
+                    errorContainer.style.display = 'block';
+                });
+        }
+
+        // Submit Tambah G form
+        function submitTambahG() {
+            const bank = document.getElementById('tambah-bank').value;
+            const nama = document.getElementById('tambah-nama').value;
+            const nomor = document.getElementById('tambah-nomor').value;
+            
+            const errorContainer = document.getElementById('tambah-error');
+            errorContainer.style.display = 'none';
+            
+            // Validate form
+            if (!bank || !nama || !nomor) {
+                errorContainer.textContent = 'Semua field harus diisi!';
+                errorContainer.style.display = 'block';
+                return;
+            }
+            
+            // Create transaction in waiting
+            const user = auth.currentUser;
+            const transactionId = database.ref().child('waiting').push().key;
+            const transactionData = {
+                type: 'tambah',
+                account: {
+                    bank: bank,
+                    name: nama,
+                    number: nomor
+                },
+                submittedBy: {
+                    uid: user.uid,
+                    name: user.displayName || user.email,
+                    email: user.email
+                },
+                submittedAt: firebase.database.ServerValue.TIMESTAMP,
+                status: 'pending'
+            };
+            
+            // Add to waiting list
+            database.ref('waiting/' + transactionId).set(transactionData)
+                .then(() => {
+                    // Show success message
+                    const successContainer = document.getElementById('tambah-success');
+                    successContainer.innerHTML = '<i class="fas fa-check-circle"></i> Permintaan tambah G berhasil diajukan dan menunggu persetujuan!';
+                    successContainer.style.display = 'block';
+                    
+                    // Clear form
+                    document.getElementById('tambah-bank').value = '';
+                    document.getElementById('tambah-nama').value = '';
+                    document.getElementById('tambah-nomor').value = '';
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        successContainer.style.display = 'none';
+                    }, 5000);
+                    
+                    // Add to logs
+                    addLog(`Mengajukan permintaan tambah G untuk ${bank} ${nomor}`);
+                    
+                    // Refresh waiting list
+                    refreshWaiting();
+                })
+                .catch(error => {
+                    errorContainer.textContent = error.message;
+                    errorContainer.style.display = 'block';
+                });
+        }
+
+        // Refresh waiting list
+        function refreshWaiting() {
+            const waitingList = document.getElementById('waiting-list');
+            waitingList.innerHTML = '<tr><td colspan="5" style="text-align: center;"><div class="spinner"></div> Memuat data...</td></tr>';
+            
+            database.ref('waiting').once('value')
+                .then(snapshot => {
+                    if (!snapshot.exists()) {
+                        waitingList.innerHTML = '<tr><td colspan="5" style="text-align: center;">Tidak ada data waiting approval</td></tr>';
+                        return;
+                    }
+                    
+                    waitingList.innerHTML = '';
+                    
+                    snapshot.forEach(child => {
+                        const transaction = child.val();
+                        const row = document.createElement('tr');
+                        
+                        // Format date
+                        const date = new Date(transaction.submittedAt);
+                        const dateStr = date.toLocaleString();
+                        
+                        // Create cells
+                        const dateCell = document.createElement('td');
+                        dateCell.textContent = dateStr;
+                        
+                        const typeCell = document.createElement('td');
+                        typeCell.textContent = transaction.type === 'geser' ? 'Geser G' : 'Tambah G';
+                        
+                        const detailCell = document.createElement('td');
+                        if (transaction.type === 'geser') {
+                            detailCell.innerHTML = `
+                                <strong>Dari:</strong> ${transaction.from.bank} - ${transaction.from.number}<br>
+                                <strong>Ke:</strong> ${transaction.to.bank} - ${transaction.to.number}
+                            `;
+                        } else {
+                            detailCell.innerHTML = `
+                                <strong>Bank:</strong> ${transaction.account.bank}<br>
+                                <strong>No Rek:</strong> ${transaction.account.number}
+                            `;
+                        }
+                        
+                        const statusCell = document.createElement('td');
+                        const statusBadge = document.createElement('span');
+                        statusBadge.className = 'status-badge status-pending';
+                        statusBadge.textContent = 'Pending';
+                        statusCell.appendChild(statusBadge);
+                        
+                        const actionCell = document.createElement('td');
+                        const approveBtn = document.createElement('button');
+                        approveBtn.className = 'btn btn-success';
+                        approveBtn.innerHTML = '<i class="fas fa-check"></i> Approve';
+                        approveBtn.addEventListener('click', () => approveTransaction(child.key, transaction));
+                        
+                        const rejectBtn = document.createElement('button');
+                        rejectBtn.className = 'btn btn-danger';
+                        rejectBtn.style.marginLeft = '5px';
+                        rejectBtn.innerHTML = '<i class="fas fa-times"></i> Reject';
+                        rejectBtn.addEventListener('click', () => rejectTransaction(child.key, transaction));
+                        
+                        actionCell.appendChild(approveBtn);
+                        actionCell.appendChild(rejectBtn);
+                        
+                        // Append cells to row
+                        row.appendChild(dateCell);
+                        row.appendChild(typeCell);
+                        row.appendChild(detailCell);
+                        row.appendChild(statusCell);
+                        row.appendChild(actionCell);
+                        
+                        // Append row to table
+                        waitingList.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    waitingList.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #DC3545;">Gagal memuat data: ' + error.message + '</td></tr>';
+                });
+        }
+
+        // Approve transaction
+        function approveTransaction(transactionId, transaction) {
+            const user = auth.currentUser;
+            
+            // Add to history
+            const historyData = {
+                ...transaction,
+                approvedBy: {
+                    uid: user.uid,
+                    name: user.displayName || user.email,
+                    email: user.email
+                },
+                approvedAt: firebase.database.ServerValue.TIMESTAMP,
+                status: 'approved',
+                date: new Date().toISOString().split('T')[0] // Today's date in YYYY-MM-DD format
+            };
+            
+            // For tambah G, also add to accounts
+            if (transaction.type === 'tambah') {
+                const accountId = database.ref().child('accounts').push().key;
+                const accountData = {
+                    bank: transaction.account.bank,
+                    name: transaction.account.name,
+                    number: transaction.account.number,
+                    status: 'active',
+                    group: '', // Will be assigned later
+                    addedBy: transaction.submittedBy,
+                    addedAt: firebase.database.ServerValue.TIMESTAMP
+                };
+                
+                database.ref('accounts/' + accountId).set(accountData);
+            }
+            
+            // For geser G, update the account in the database (in a real app)
+            
+            // Move to history
+            database.ref('history/' + transactionId).set(historyData)
+                .then(() => {
+                    // Remove from waiting
+                    return database.ref('waiting/' + transactionId).remove();
+                })
+                .then(() => {
+                    // Refresh lists
+                    refreshWaiting();
+                    refreshHistory();
+                    refreshAccounts();
+                    
+                    // Add to logs
+                    addLog(`Menyetujui transaksi ${transaction.type} ${transactionId}`);
+                    
+                    // Show success message
+                    alert('Transaksi berhasil disetujui!');
+                })
+                .catch(error => {
+                    alert('Gagal menyetujui transaksi: ' + error.message);
+                });
+        }
+
+        // Reject transaction
+        function rejectTransaction(transactionId, transaction) {
+            if (!confirm('Apakah Anda yakin ingin menolak transaksi ini?')) {
+                return;
+            }
+            
+            const user = auth.currentUser;
+            
+            // Add to history as rejected
+            const historyData = {
+                ...transaction,
+                rejectedBy: {
+                    uid: user.uid,
+                    name: user.displayName || user.email,
+                    email: user.email
+                },
+                rejectedAt: firebase.database.ServerValue.TIMESTAMP,
+                status: 'rejected',
+                date: new Date().toISOString().split('T')[0] // Today's date in YYYY-MM-DD format
+            };
+            
+            // Move to history
+            database.ref('history/' + transactionId).set(historyData)
+                .then(() => {
+                    // Remove from waiting
+                    return database.ref('waiting/' + transactionId).remove();
+                })
+                .then(() => {
+                    // Refresh lists
+                    refreshWaiting();
+                    refreshHistory();
+                    
+                    // Add to logs
+                    addLog(`Menolak transaksi ${transaction.type} ${transactionId}`);
+                    
+                    // Show success message
+                    alert('Transaksi berhasil ditolak!');
+                })
+                .catch(error => {
+                    alert('Gagal menolak transaksi: ' + error.message);
+                });
+        }
+
+        // Refresh history
+        function refreshHistory() {
+            const filter = document.getElementById('history-filter').value;
+            const historyList = document.getElementById('history-list');
+            historyList.innerHTML = '<tr><td colspan="5" style="text-align: center;"><div class="spinner"></div> Memuat data...</td></tr>';
+            
+            let query = database.ref('history').orderByChild('submittedAt');
+            
+            // Apply filter
+            const now = new Date();
+            let startDate, endDate;
+            
+            switch (filter) {
+                case 'today':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+                    break;
+                case 'yesterday':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+                    endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    break;
+                case 'week':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+                    endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (6 - now.getDay()) + 1);
+                    break;
+                case 'month':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                    break;
+                case 'all':
+                default:
+                    // No date filtering
+                    break;
+            }
+            
+            if (filter !== 'all') {
+                query = query.startAt(startDate.getTime()).endAt(endDate.getTime() - 1);
+            }
+            
+            query.once('value')
+                .then(snapshot => {
+                    if (!snapshot.exists()) {
+                        historyList.innerHTML = '<tr><td colspan="5" style="text-align: center;">Tidak ada data history</td></tr>';
+                        return;
+                    }
+                    
+                    historyList.innerHTML = '';
+                    
+                    // Convert to array and sort by date (newest first)
+                    const transactions = [];
+                    snapshot.forEach(child => {
+                        transactions.push({
+                            id: child.key,
+                            ...child.val()
+                        });
+                    });
+                    
+                    transactions.sort((a, b) => b.submittedAt - a.submittedAt);
+                    
+                    transactions.forEach(transaction => {
+                        const row = document.createElement('tr');
+                        
+                        // Format date
+                        const date = new Date(transaction.submittedAt);
+                        const dateStr = date.toLocaleString();
+                        
+                        // Create cells
+                        const dateCell = document.createElement('td');
+                        dateCell.textContent = dateStr;
+                        
+                        const typeCell = document.createElement('td');
+                        typeCell.textContent = transaction.type === 'geser' ? 'Geser G' : 'Tambah G';
+                        
+                        const detailCell = document.createElement('td');
+                        if (transaction.type === 'geser') {
+                            detailCell.innerHTML = `
+                                <strong>Dari:</strong> ${transaction.from.bank} - ${transaction.from.number}<br>
+                                <strong>Ke:</strong> ${transaction.to.bank} - ${transaction.to.number}
+                            `;
+                        } else {
+                            detailCell.innerHTML = `
+                                <strong>Bank:</strong> ${transaction.account.bank}<br>
+                                <strong>No Rek:</strong> ${transaction.account.number}
+                            `;
+                        }
+                        
+                        const statusCell = document.createElement('td');
+                        const statusBadge = document.createElement('span');
+                        statusBadge.className = transaction.status === 'approved' ? 
+                            'status-badge status-online' : 'status-badge status-offline';
+                        statusBadge.textContent = transaction.status === 'approved' ? 'Approved' : 'Rejected';
+                        statusCell.appendChild(statusBadge);
+                        
+                        const approvedByCell = document.createElement('td');
+                        if (transaction.status === 'approved') {
+                            approvedByCell.textContent = transaction.approvedBy.name;
+                        } else {
+                            approvedByCell.textContent = transaction.rejectedBy.name;
+                        }
+                        
+                        // Append cells to row
+                        row.appendChild(dateCell);
+                        row.appendChild(typeCell);
+                        row.appendChild(detailCell);
+                        row.appendChild(statusCell);
+                        row.appendChild(approvedByCell);
+                        
+                        // Append row to table
+                        historyList.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    historyList.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #DC3545;">Gagal memuat data: ' + error.message + '</td></tr>';
+                });
+        }
+
+        // Refresh accounts
+        function refreshAccounts() {
+            const accountsList = document.getElementById('accounts-list');
+            accountsList.innerHTML = '<tr><td colspan="6" style="text-align: center;"><div class="spinner"></div> Memuat data...</td></tr>';
+            
+            database.ref('accounts').once('value')
+                .then(snapshot => {
+                    if (!snapshot.exists()) {
+                        accountsList.innerHTML = '<tr><td colspan="6" style="text-align: center;">Tidak ada data rekening</td></tr>';
+                        return;
+                    }
+                    
+                    accountsList.innerHTML = '';
+                    
+                    snapshot.forEach(child => {
+                        const account = child.val();
+                        const row = document.createElement('tr');
+                        
+                        // Create cells
+                        const bankCell = document.createElement('td');
+                        bankCell.textContent = account.bank;
+                        
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = account.name;
+                        
+                        const numberCell = document.createElement('td');
+                        numberCell.textContent = account.number;
+                        
+                        const statusCell = document.createElement('td');
+                        const statusBadge = document.createElement('span');
+                        statusBadge.className = account.status === 'active' ? 
+                            'status-badge status-online' : 'status-badge status-offline';
+                        statusBadge.textContent = account.status === 'active' ? 'Active' : 'Inactive';
+                        statusCell.appendChild(statusBadge);
+                        
+                        const groupCell = document.createElement('td');
+                        groupCell.textContent = account.group || '-';
+                        
+                        const actionCell = document.createElement('td');
+                        const editBtn = document.createElement('button');
+                        editBtn.className = 'btn btn-secondary';
+                        editBtn.style.marginRight = '5px';
+                        editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+                        editBtn.addEventListener('click', () => editAccount(child.key, account));
+                        
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'btn btn-danger';
+                        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                        deleteBtn.addEventListener('click', () => deleteAccount(child.key, account));
+                        
+                        actionCell.appendChild(editBtn);
+                        actionCell.appendChild(deleteBtn);
+                        
+                        // Append cells to row
+                        row.appendChild(bankCell);
+                        row.appendChild(nameCell);
+                        row.appendChild(numberCell);
+                        row.appendChild(statusCell);
+                        row.appendChild(groupCell);
+                        row.appendChild(actionCell);
+                        
+                        // Append row to table
+                        accountsList.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    accountsList.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #DC3545;">Gagal memuat data: ' + error.message + '</td></tr>';
+                });
+        }
+
+        // Show add account modal
+        function showAddAccountModal() {
+            document.getElementById('add-account-modal').style.display = 'flex';
+        }
+
+        // Hide add account modal
+        function hideAddAccountModal() {
+            document.getElementById('add-account-modal').style.display = 'none';
+            document.getElementById('add-account-error').style.display = 'none';
+            document.getElementById('add-account-bank').value = '';
+            document.getElementById('add-account-name').value = '';
+            document.getElementById('add-account-number').value = '';
+            document.getElementById('add-account-group').value = '';
+        }
+
+        // Submit add account form
+        function submitAddAccount() {
+            const bank = document.getElementById('add-account-bank').value;
+            const name = document.getElementById('add-account-name').value;
+            const number = document.getElementById('add-account-number').value;
+            const group = document.getElementById('add-account-group').value;
+            
+            const errorContainer = document.getElementById('add-account-error');
+            errorContainer.style.display = 'none';
+            
+            // Validate form
+            if (!bank || !name || !number) {
+                errorContainer.textContent = 'Bank, Nama, dan Nomor Rekening harus diisi!';
+                errorContainer.style.display = 'block';
+                return;
+            }
+            
+            // Create account
+            const user = auth.currentUser;
+            const accountId = database.ref().child('accounts').push().key;
+            const accountData = {
+                bank: bank,
+                name: name,
+                number: number,
+                group: group,
+                status: 'active',
+                addedBy: {
+                    uid: user.uid,
+                    name: user.displayName || user.email,
+                    email: user.email
+                },
+                addedAt: firebase.database.ServerValue.TIMESTAMP
+            };
+            
+            // Add to accounts
+            database.ref('accounts/' + accountId).set(accountData)
+                .then(() => {
+                    // Hide modal and refresh
+                    hideAddAccountModal();
+                    refreshAccounts();
+                    
+                    // Add to logs
+                    addLog(`Menambahkan rekening baru ${bank} ${number}`);
+                    
+                    // Show success message
+                    alert('Rekening berhasil ditambahkan!');
+                })
+                .catch(error => {
+                    errorContainer.textContent = error.message;
+                    errorContainer.style.display = 'block';
+                });
+        }
+
+        // Edit account
+        function editAccount(accountId, account) {
+            // In a real app, you would show an edit form
+            // For now, we'll just toggle the status
+            const newStatus = account.status === 'active' ? 'inactive' : 'active';
+            
+            database.ref('accounts/' + accountId + '/status').set(newStatus)
+                .then(() => {
+                    refreshAccounts();
+                    addLog(`Mengubah status rekening ${account.bank} ${account.number} menjadi ${newStatus}`);
+                })
+                .catch(error => {
+                    alert('Gagal mengubah status: ' + error.message);
+                });
+        }
+
+        // Delete account
+        function deleteAccount(accountId, account) {
+            if (!confirm(`Apakah Anda yakin ingin menghapus rekening ${account.bank} ${account.number}?`)) {
+                return;
+            }
+            
+            database.ref('accounts/' + accountId).remove()
+                .then(() => {
+                    refreshAccounts();
+                    addLog(`Menghapus rekening ${account.bank} ${account.number}`);
+                    alert('Rekening berhasil dihapus!');
+                })
+                .catch(error => {
+                    alert('Gagal menghapus rekening: ' + error.message);
+                });
+        }
+
+        // Check group
+        function checkGroup() {
+            const bank = document.getElementById('group-bank').value;
+            
+            if (!bank) {
+                alert('Pilih bank terlebih dahulu!');
+                return;
+            }
+            
+            const groupResult = document.getElementById('group-result');
+            const groupList = document.getElementById('group-list');
+            const groupSuccess = document.getElementById('group-success');
+            const groupError = document.getElementById('group-error');
+            
+            groupResult.style.display = 'block';
+            groupList.innerHTML = '<tr><td colspan="6" style="text-align: center;"><div class="spinner"></div> Memeriksa grup...</td></tr>';
+            groupSuccess.style.display = 'none';
+            groupError.style.display = 'none';
+            
+            // In a real app, you would check the actual groups in your database
+            // For now, we'll simulate checking groups
+            
+            // Simulate API call
+            setTimeout(() => {
+                // This is just sample data - in a real app, you would query your database
+                const sampleData = [
+                    {
+                        no: 1,
+                        bank: 'BCA',
+                        name: 'AMELIA PRASASTI NINGSIH',
+                        number: '4660366887',
+                        status: 'Online',
+                        group: '19,17,15,13,11,9,7,5,3,1'
+                    },
+                    {
+                        no: 2,
+                        bank: 'BCA',
+                        name: 'Heri purnomo',
+                        number: '3860228318',
+                        status: 'Online',
+                        group: '20,18,16,14,12,10,8,6,4,2'
+                    },
+                    {
+                        no: 3,
+                        bank: 'BCA',
+                        name: 'Muhammad Yusuf Alan Permana',
+                        number: '0613865851',
+                        status: 'Online',
+                        group: '-'
+                    }
+                ];
+                
+                // Filter by selected bank
+                const filteredData = sampleData.filter(item => item.bank === bank);
+                
+                if (filteredData.length === 0) {
+                    groupList.innerHTML = '<tr><td colspan="6" style="text-align: center;">Tidak ada data untuk bank ini</td></tr>';
+                    return;
+                }
+                
+                groupList.innerHTML = '';
+                
+                filteredData.forEach(item => {
+                    const row = document.createElement('tr');
+                    
+                    // Create cells
+                    const noCell = document.createElement('td');
+                    noCell.textContent = item.no;
+                    
+                    const bankCell = document.createElement('td');
+                    bankCell.textContent = item.bank;
+                    
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = item.name;
+                    
+                    const numberCell = document.createElement('td');
+                    numberCell.textContent = item.number;
+                    
+                    const statusCell = document.createElement('td');
+                    const statusBadge = document.createElement('span');
+                    statusBadge.className = 'status-badge status-online';
+                    statusBadge.textContent = item.status;
+                    statusCell.appendChild(statusBadge);
+                    
+                    const groupCell = document.createElement('td');
+                    groupCell.textContent = item.group;
+                    
+                    // Append cells to row
+                    row.appendChild(noCell);
+                    row.appendChild(bankCell);
+                    row.appendChild(nameCell);
+                    row.appendChild(numberCell);
+                    row.appendChild(statusCell);
+                    row.appendChild(groupCell);
+                    
+                    // Append row to table
+                    groupList.appendChild(row);
+                });
+                
+                // Check if all groups are complete (this is just a simulation)
+                const hasCompleteGroups = filteredData.some(item => item.group.includes('20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1'));
+                
+                if (hasCompleteGroups) {
+                    groupSuccess.style.display = 'block';
+                } else {
+                    groupError.style.display = 'block';
+                    groupError.innerHTML += '<ul style="margin-top: 10px; margin-bottom: 0;">';
+                    
+                    // Check for missing groups (simulated)
+                    const missingGroups = [];
+                    for (let i = 1; i <= 20; i++) {
+                        const hasGroup = filteredData.some(item => item.group.includes(i.toString()));
+                        if (!hasGroup) {
+                            missingGroups.push(i);
+                        }
+                    }
+                    
+                    if (missingGroups.length > 0) {
+                        groupError.innerHTML += `<li>Grup yang hilang: ${missingGroups.join(', ')}</li>`;
+                    }
+                    
+                    // Check for duplicate groups (simulated)
+                    const allGroups = [];
+                    filteredData.forEach(item => {
+                        if (item.group && item.group !== '-') {
+                            item.group.split(',').forEach(g => {
+                                allGroups.push(g.trim());
+                            });
+                        }
+                    });
+                    
+                    const duplicateGroups = [];
+                    const groupCount = {};
+                    allGroups.forEach(g => {
+                        groupCount[g] = (groupCount[g] || 0) + 1;
+                    });
+                    
+                    for (const g in groupCount) {
+                        if (groupCount[g] > 1) {
+                            duplicateGroups.push(g);
+                        }
+                    }
+                    
+                    if (duplicateGroups.length > 0) {
+                        groupError.innerHTML += `<li>Grup yang double: ${duplicateGroups.join(', ')}</li>`;
+                    }
+                    
+                    groupError.innerHTML += '</ul>';
+                }
+            }, 1000);
+        }
+
+        // Refresh activity
+        function refreshActivity() {
+            const activityContainer = document.getElementById('recent-activity');
+            activityContainer.innerHTML = '<div class="timeline-item"><div class="timeline-date">Loading...</div><div class="timeline-content"><div class="spinner"></div> Memuat aktivitas...</div></div>';
+            
+            database.ref('history').orderByChild('submittedAt').limitToLast(5).once('value')
+                .then(snapshot => {
+                    if (!snapshot.exists()) {
+                        activityContainer.innerHTML = '<div class="timeline-item"><div class="timeline-content">Tidak ada aktivitas terakhir</div></div>';
+                        return;
+                    }
+                    
+                    activityContainer.innerHTML = '';
+                    
+                    // Convert to array and sort by date (newest first)
+                    const activities = [];
+                    snapshot.forEach(child => {
+                        activities.push(child.val());
+                    });
+                    
+                    activities.sort((a, b) => b.submittedAt - a.submittedAt);
+                    
+                    activities.forEach(activity => {
+                        const date = new Date(activity.submittedAt);
+                        const dateStr = date.toLocaleString();
+                        
+                        const item = document.createElement('div');
+                        item.className = 'timeline-item';
+                        
+                        const dateEl = document.createElement('div');
+                        dateEl.className = 'timeline-date';
+                        dateEl.textContent = dateStr;
+                        
+                        const content = document.createElement('div');
+                        content.className = 'timeline-content';
+                        
+                        let actionText = '';
+                        if (activity.type === 'geser') {
+                            actionText = `Geser G dari ${activity.from.bank} (${activity.from.number}) ke ${activity.to.bank} (${activity.to.number})`;
+                        } else {
+                            actionText = `Tambah G untuk ${activity.account.bank} (${activity.account.number})`;
+                        }
+                        
+                        const status = activity.status === 'approved' ? 'Disetujui' : 'Ditolak';
+                        
+                        content.innerHTML = `
+                            <strong>${activity.submittedBy.name}</strong> ${actionText}<br>
+                            Status: <span class="${activity.status === 'approved' ? 'status-online' : 'status-offline'}">${status}</span>
+                        `;
+                        
+                        item.appendChild(dateEl);
+                        item.appendChild(content);
+                        activityContainer.appendChild(item);
+                    });
+                })
+                .catch(error => {
+                    activityContainer.innerHTML = '<div class="timeline-item"><div class="timeline-content" style="color: #DC3545;">Gagal memuat aktivitas: ' + error.message + '</div></div>';
+                });
+        }
+
+        // Refresh logs
+        function refreshLogs() {
+            const logsList = document.getElementById('logs-list');
+            logsList.innerHTML = '<tr><td colspan="4" style="text-align: center;"><div class="spinner"></div> Memuat data...</td></tr>';
+            
+            database.ref('logs').orderByChild('timestamp').limitToLast(50).once('value')
+                .then(snapshot => {
+                    if (!snapshot.exists()) {
+                        logsList.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tidak ada log aktivitas</td></tr>';
+                        return;
+                    }
+                    
+                    logsList.innerHTML = '';
+                    
+                    // Convert to array and sort by timestamp (newest first)
+                    const logs = [];
+                    snapshot.forEach(child => {
+                        logs.push(child.val());
+                    });
+                    
+                    logs.sort((a, b) => b.timestamp - a.timestamp);
+                    
+                    logs.forEach(log => {
+                        const row = document.createElement('tr');
+                        
+                        // Format date
+                        const date = new Date(log.timestamp);
+                        const dateStr = date.toLocaleString();
+                        
+                        // Create cells
+                        const dateCell = document.createElement('td');
+                        dateCell.textContent = dateStr;
+                        
+                        const userCell = document.createElement('td');
+                        userCell.textContent = log.user;
+                        
+                        const actionCell = document.createElement('td');
+                        actionCell.textContent = log.action;
+                        
+                        const detailCell = document.createElement('td');
+                        detailCell.textContent = log.details || '-';
+                        
+                        // Append cells to row
+                        row.appendChild(dateCell);
+                        row.appendChild(userCell);
+                        row.appendChild(actionCell);
+                        row.appendChild(detailCell);
+                        
+                        // Append row to table
+                        logsList.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    logsList.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #DC3545;">Gagal memuat log: ' + error.message + '</td></tr>';
+                });
+        }
+
+        // Add log
+        function addLog(action, details = '') {
+            const user = auth.currentUser;
+            const logData = {
+                user: user.displayName || user.email,
+                action: action,
+                details: details,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            };
+            
+            database.ref('logs').push(logData);
+        }
+
+        // Update stats
+        function updateStats() {
+            // Today's date in YYYY-MM-DD format
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Count geserG today
+            database.ref('history').orderByChild('date').equalTo(today).once('value')
+                .then(snapshot => {
+                    let geserCount = 0;
+                    let tambahCount = 0;
+                    
+                    snapshot.forEach(child => {
+                        if (child.val().type === 'geser') {
+                            geserCount++;
+                        } else if (child.val().type === 'tambah') {
+                            tambahCount++;
+                        }
+                    });
+                    
+                    document.getElementById('geser-today').textContent = geserCount;
+                    document.getElementById('tambah-today').textContent = tambahCount;
+                });
+            
+            // Count waiting
+            database.ref('waiting').once('value')
+                .then(snapshot => {
+                    document.getElementById('waiting-today').textContent = snapshot.numChildren();
+                });
+        }
     </script>
 </body>
 </html>
